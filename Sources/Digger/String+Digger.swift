@@ -68,8 +68,8 @@ func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
         return bytes
     }
     
-    valuePointer.deinitialize()
-    valuePointer.deallocate(capacity: 1)
+    valuePointer.deinitialize(count: 1)
+    valuePointer.deallocate()
     
     return bytes
 }
@@ -221,7 +221,7 @@ class MD5: HashProtocol {
         
         for chunk in BytesSequence(chunkSize: chunkSizeBytes, data: tmpMessage) {
             // break chunk into sixteen 32-bit words M[j], 0 ≤ j ≤ 15
-            var M = toUInt32Array(chunk)
+            let M = toUInt32Array(chunk)
             assert(M.count == 16, "Invalid array")
             
             // Initialize hash value for this chunk:
@@ -287,7 +287,7 @@ class MD5: HashProtocol {
 
 extension NSString{
     
-    var md5: NSString{
+    var md5: NSString {
         
         return ((self as String).md5 as NSString)
     }
